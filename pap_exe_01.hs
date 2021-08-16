@@ -83,14 +83,22 @@ mapear f (x:xs) = f x : mapear f xs
 
 primeirosTupla :: [(a,b)] -> [a]
 primeirosTupla [] = []
-primeirosTupla ((x,y):xs) = x : primeirosTupla xs
+primeirosTupla x = mapear fst x
 
 todos :: [Bool] -> Bool
 todos [] = True
 todos xs = dobrarDir (&&) True xs
 
 data Tree a = Leaf a
-            | Branch a (Tree a) (Tree a)
+            | Branch (Tree a) (Tree a)
+
+maior :: Ord a => Tree a -> a
+maior (Leaf a) = a
+maior (Branch l r) = max (maior l) (maior r)
+
+altura :: Tree a -> Int 
+altura (Leaf a) = 0
+altura (Branch l r) = 1 + max (altura l) (altura r)
 
 main :: IO ()
 main = do
@@ -160,3 +168,10 @@ main = do
     print resultado_18a
     let resultado_18b = todos bool_list_b
     print resultado_18b
+
+    let mock_tree = Branch (Branch (Branch (Leaf 5) (Leaf 3)) (Leaf 2)) (Leaf 18)
+    let resultado_19 = maior mock_tree
+    print resultado_19
+
+    let resultado_20 = altura mock_tree
+    print resultado_20
