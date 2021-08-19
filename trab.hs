@@ -1,3 +1,6 @@
+-- Trabalho Final Paradigmas de Programação - 2021/1
+-- Alunos: GUILHERME ARAUJO LIRA DE MENEZES E THIAGO PIMENTA BARROS SILVA
+
 module Main where
 import Text.ParserCombinators.Parsec
 import Data.List
@@ -33,7 +36,8 @@ parseFun  = do
     whiteSpace
     arrow <- string "->"
     whiteSpace
-    TypeArrow first <$> parseType
+    TypeArrow first <$> parseType 
+    --recomendação do VSCode = second <- parseType return (TypeArrow first second)
 
 parseParen :: Parser Type -- paren: "(" type ")"
 parseParen = do
@@ -46,11 +50,6 @@ whiteSpace :: Parser ()
 whiteSpace = do
   many (char ' ')
   return ()
-
-teste :: Unifier
-teste = [
-            ("x", TypeVar "y")
-        ]
 
 main :: IO ()
 main = do
@@ -65,7 +64,7 @@ main = do
     Just s ->
       putStrLn $ showUnifier s
     Nothing ->
-      putStrLn "Deu ruim!"
+      putStrLn "Não foi possível unificar"
 
 subst :: Unifier -> Type -> Type
 subst s TypeInt =
@@ -94,7 +93,7 @@ compose s2 s1 =
 
 unify :: Type -> Type -> Maybe Unifier
 -- REFL
-unify (TypeVar x) (TypeVar y) | x== y =
+unify (TypeVar x) (TypeVar y) | x == y =
     Just []
 -- LEFT
 unify (TypeVar x) e | not (occursCheck x e) =
